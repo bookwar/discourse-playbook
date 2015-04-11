@@ -1,0 +1,5 @@
+---
+discourse_user: discourse
+discourse_version: v1.2.1
+discourse_home: /home/discourse
+discourse_path: /home/discourse/discourse_bundle

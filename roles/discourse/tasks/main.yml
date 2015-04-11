@@ -1,0 +1,37 @@
+---
+
+- name: Create Discourse user
+  user: name={{ discourse_user }} home={{ discourse_home }} state=present generate_ssh_key=yes
+
+- include: ruby-deps.yml
+
+- name: Install git
+  yum: name=git state=present
+
+- name: Add GitHub hostkey
+  known_hosts:
+    host: github.com
+    key: "|1|Rv78IAu9WdHNyy/2OVQbt52Yy3s=|kUL60UtBYeyPyo6euXiiuWgZmqI= ssh-rsa AAAAB3NzaC1yc2EAAAABIwAAAQEAq2A7hRGmdnm9tUDbO9IDSwBK6TbQa+PXYPCPy6rbTrTtw7PHkccKrpp0yVhp5HdEIcKr6pLlVDBfOLX9QUsyCOV0wzfjIJNlGEYsdlLJizHhbn2mUjvSAHQqZETYP81eFzLQNnPHt4EVVUh7VfDESU84KezmD5QlWpXLmvU31/yMf+Se8xhHTvKSCZIFImWwoG6mbUoWf9nzpIoaSjB+weqqUUmpaaasXVal72J+UX2B+2RPW3RcT0eOzQgqlJL3RKrTJvdsjE3JEAvGq3lGHSZXy28G3skua2SmVi/w4yCE6gbODqnTWlg7+wC604ydGXA8VJiS5ap43JXiUFFAaQ=="
+    state: present
+  sudo: yes
+  sudo_user: "{{ discourse_user }}"
+    
+- name: Get Discourse
+  git:
+    repo: git://github.com/discourse/discourse.git
+    dest: "{{ discourse_home }}/discourse-{{ discourse_version }}"
+    version: "{{ discourse_version }}"
+    depth: 1
+  sudo: yes
+  sudo_user: "{{ discourse_user }}"
+
+- name: Build Discourse
+  command: bundle install --deployment --without test
+  args:
+    chdir: "{{ discourse_home }}/discourse-{{ discourse_version }}"
+    creates: "{{ discourse_path }}/discourse-{{ discourse_version }}"
+  sudo: yes
+  sudo_user: "{{ discourse_user }}"
+ 
+  
+    

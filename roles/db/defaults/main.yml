@@ -1,0 +1,4 @@
+---
+dbname: discourse_db
+dbuser: discourse_user
+dbpassword: discourse_pass

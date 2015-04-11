@@ -1,0 +1,37 @@
+---
+- name: Install ruby
+  yum: name=ruby state=present
+
+- name: Install ruby bundler gem
+  yum: name=rubygem-bundler state=present
+
+- name: Install ruby development files
+  yum: name=ruby-devel state=present
+
+# rubygem-json
+- name: Install gcc
+  yum: name=gcc state=present
+
+# rubygem-eventmachine
+- name: Install gcc-c++
+  yum: name=gcc-c++ state=present
+
+# rubygem-nokogiri
+- name: Install libxml2 development files
+  yum: name=libxml2-devel state=present
+
+- name: Install libxslt development files
+  yum: name=libxslt-devel state=present
+
+- name: Enable system libraries for nokogiri gem
+  command: bundle config build.nokogiri --use-system-libraries
+  sudo: yes
+  sudo_user: "{{ discourse_user }}"
+
+# rubygem-pg
+- name: Install PostgreSQL development files
+  yum: name=postgresql-devel state=present
+
+# rubygem-puma
+- name: Install OpenSSL development files
+  yum: name=openssl-devel state=present

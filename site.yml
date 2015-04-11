@@ -1,0 +1,10 @@
+---
+- name: Install Discourse
+  hosts: discourse-server
+  user: root
+
+  roles:
+    - common
+    - redis
+    - db
+    - discourse

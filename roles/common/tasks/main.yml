@@ -1,0 +1,8 @@
+---
+
+- include: swapfile.yml
+  when: ansible_memtotal_mb < 1024
+
+- include: epel.yml
+
+- include: firewall.yml

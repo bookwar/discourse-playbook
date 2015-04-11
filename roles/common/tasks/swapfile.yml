@@ -1,0 +1,15 @@
+---
+- name: Create swapfile
+  command: fallocate -l {{ swapfile_size }} {{ swapfile_path }} creates={{ swapfile_path }}
+
+- name: Set swapfile permissions
+  file: path={{ swapfile_path}} owner=root group=root mode=0600
+
+- name: Set up swap on swapfile
+  command: mkswap {{ swapfile_path }} creates={{ swapfile_path }}
+
+- name: Enable swapfile
+  command: swapon {{ swapfile_path }} creates={{ swapfile_path }}
+
+- name: Enable swapfile permanently
+  mount: name=swapfile src={{ swapfile_path }} fstype=swap state=present
